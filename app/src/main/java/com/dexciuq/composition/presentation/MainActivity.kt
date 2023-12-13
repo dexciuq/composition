@@ -1,7 +1,8 @@
-package com.dexciuq.composition
+package com.dexciuq.composition.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.dexciuq.composition.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
