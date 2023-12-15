@@ -53,7 +53,7 @@ object GameRepositoryImpl : GameRepository {
                 )
             }
 
-            Level.MEDIUM -> {
+            Level.NORMAL -> {
                 GameSettings(
                     maxSumValue = 20,
                     minCountOfRightAnswers = 20,

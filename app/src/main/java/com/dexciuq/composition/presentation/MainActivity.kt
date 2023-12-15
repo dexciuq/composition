@@ -1,8 +1,7 @@
 package com.dexciuq.composition.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dexciuq.composition.R
+import androidx.appcompat.app.AppCompatActivity
 import com.dexciuq.composition.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
