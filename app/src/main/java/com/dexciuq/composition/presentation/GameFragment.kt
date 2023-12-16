@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import com.dexciuq.composition.R
 import com.dexciuq.composition.databinding.FragmentGameBinding
 import com.dexciuq.composition.domain.entity.GameResult
@@ -21,11 +20,12 @@ class GameFragment : Fragment() {
     private val binding: FragmentGameBinding
         get() = _binding ?: error("FragmentGameBinding is null")
 
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(level, requireActivity().application)
+    }
+
     private val viewModel: GameViewModel by lazy {
-        ViewModelProvider(
-            this,
-            AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[GameViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
 
     private val tvOptions by lazy {
@@ -65,7 +65,6 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
         setListeners()
-        viewModel.startGame(level)
     }
 
     private fun setListeners() {
