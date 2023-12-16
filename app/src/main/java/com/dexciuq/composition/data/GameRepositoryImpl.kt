@@ -29,7 +29,7 @@ object GameRepositoryImpl : GameRepository {
         return Question(
             sum = sum,
             visibleNumber = visibleNumber,
-            options = options.toList(),
+            options = options.sorted(),
         )
     }
 
@@ -53,7 +53,7 @@ object GameRepositoryImpl : GameRepository {
                 )
             }
 
-            Level.MEDIUM -> {
+            Level.NORMAL -> {
                 GameSettings(
                     maxSumValue = 20,
                     minCountOfRightAnswers = 20,

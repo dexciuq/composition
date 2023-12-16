@@ -1,12 +1,23 @@
 package com.dexciuq.composition.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dexciuq.composition.R
+import androidx.appcompat.app.AppCompatActivity
+import com.dexciuq.composition.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding
+        get() = _binding ?: error("ActivityMainBinding is null")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }
