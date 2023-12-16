@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.dexciuq.composition.R
 import com.dexciuq.composition.databinding.FragmentGameBinding
 import com.dexciuq.composition.domain.entity.GameResult
@@ -128,10 +129,10 @@ class GameFragment : Fragment() {
     }
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResult))
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(
+            resId = R.id.action_gameFragment_to_gameFinishedFragment,
+            args = bundleOf(GameFinishedFragment.KEY_GAME_RESULT to gameResult)
+        )
     }
 
     override fun onDestroy() {
@@ -143,7 +144,7 @@ class GameFragment : Fragment() {
 
         const val NAME = "GameFragment"
 
-        private const val KEY_LEVEL = "level"
+        const val KEY_LEVEL = "level"
 
         fun newInstance(level: Level): GameFragment {
             return GameFragment().apply {
