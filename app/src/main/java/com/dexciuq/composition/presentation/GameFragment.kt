@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.dexciuq.composition.R
+import androidx.navigation.fragment.navArgs
 import com.dexciuq.composition.databinding.FragmentGameBinding
 import com.dexciuq.composition.domain.entity.GameResult
-import com.dexciuq.composition.domain.entity.Level
 
 class GameFragment : Fragment() {
 
@@ -21,8 +19,10 @@ class GameFragment : Fragment() {
     private val binding: FragmentGameBinding
         get() = _binding ?: error("FragmentGameBinding is null")
 
+    private val args: GameFragmentArgs by navArgs()
+
     private val viewModelFactory by lazy {
-        GameViewModelFactory(level, requireActivity().application)
+        GameViewModelFactory(args.level, requireActivity().application)
     }
 
     private val viewModel: GameViewModel by lazy {
@@ -40,13 +40,6 @@ class GameFragment : Fragment() {
         )
     }
 
-    private lateinit var level: Level
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArgs()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,12 +47,6 @@ class GameFragment : Fragment() {
     ): View {
         _binding = FragmentGameBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    private fun parseArgs() {
-        requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
-            level = it
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -130,28 +117,12 @@ class GameFragment : Fragment() {
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
         findNavController().navigate(
-            resId = R.id.action_gameFragment_to_gameFinishedFragment,
-            args = bundleOf(GameFinishedFragment.KEY_GAME_RESULT to gameResult)
+            GameFragmentDirections.actionGameFragmentToGameFinishedFragment(gameResult)
         )
     }
 
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
-    }
-
-    companion object {
-
-        const val NAME = "GameFragment"
-
-        const val KEY_LEVEL = "level"
-
-        fun newInstance(level: Level): GameFragment {
-            return GameFragment().apply {
-                arguments = bundleOf(
-                    KEY_LEVEL to level
-                )
-            }
-        }
     }
 }
