@@ -38,27 +38,13 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun bindViews() {
-        val gameResult = args.gameResult
+        binding.gameResult =  args.gameResult
         with(binding) {
-            if (gameResult.winner) {
+            if ( args.gameResult.winner) {
                 emojiResult.setImageResource(R.drawable.ic_smile)
             } else {
                 emojiResult.setImageResource(R.drawable.ic_sad)
             }
-
-            tvRequiredAnswers.text = getString(
-                R.string.required_score,
-                gameResult.gameSettings.minCountOfRightAnswers.toString()
-            )
-            tvScoreAnswers.text = getString(
-                R.string.score_answers,
-                gameResult.countOfRightAnswers.toString()
-            )
-
-            tvRequiredPercentage.text = getString(
-                R.string.required_percentage,
-                gameResult.gameSettings.minPercentOfRightAnswers.toString()
-            )
             tvScorePercentage.text = getString(
                 R.string.score_percentage,
                 getPercentOfRightAnswers().toString()
@@ -76,12 +62,8 @@ class GameFinishedFragment : Fragment() {
 
     private fun setupListeners() {
         binding.buttonRetry.setOnClickListener {
-            retryGame()
+            findNavController().popBackStack()
         }
-    }
-
-    private fun retryGame() {
-        findNavController().popBackStack()
     }
 
     override fun onDestroy() {
