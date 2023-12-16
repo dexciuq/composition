@@ -51,67 +51,14 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         setObservers()
-        setListeners()
-    }
-
-    private fun setListeners() {
-        tvOptions.forEachIndexed { _, textView ->
-            textView.setOnClickListener {
-                viewModel.chooseAnswer(textView.text.toString().toInt())
-            }
-        }
     }
 
     private fun setObservers() {
-        with(binding) {
-            viewModel.question.observe(viewLifecycleOwner) {
-                tvSum.text = it.sum.toString()
-                tvLeftNumber.text = it.visibleNumber.toString()
-                tvOptions.forEachIndexed { i, textView ->
-                    textView.text = it.options[i].toString()
-                }
-            }
-
-            viewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
-                progressBar.setProgress(it, true)
-            }
-
-            viewModel.progressAnswers.observe(viewLifecycleOwner) {
-                tvAnswersProgress.text = it
-            }
-
-            viewModel.enoughCountOfRightAnswers.observe(viewLifecycleOwner) {
-                val colorId = if (it) {
-                    android.R.color.holo_green_light
-                } else {
-                    android.R.color.holo_red_light
-                }
-                val color = ContextCompat.getColor(requireContext(), colorId)
-                tvAnswersProgress.setTextColor(color)
-            }
-
-            viewModel.enoughPercentOfRightAnswers.observe(viewLifecycleOwner) {
-                val colorId = if (it) {
-                    android.R.color.holo_green_light
-                } else {
-                    android.R.color.holo_red_light
-                }
-                val color = ContextCompat.getColor(requireContext(), colorId)
-                progressBar.progressTintList = ColorStateList.valueOf(color)
-            }
-
-            viewModel.formattedTime.observe(viewLifecycleOwner) {
-                tvTimer.text = it
-            }
-
-            viewModel.minPercent.observe(viewLifecycleOwner) {
-                progressBar.secondaryProgress = it
-            }
-
-            viewModel.gameResult.observe(viewLifecycleOwner) {
-                launchGameFinishedFragment(it)
-            }
+        viewModel.gameResult.observe(viewLifecycleOwner) {
+            launchGameFinishedFragment(it)
         }
     }
 
